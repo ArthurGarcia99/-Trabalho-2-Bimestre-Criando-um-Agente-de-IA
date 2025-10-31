@@ -114,8 +114,10 @@ Para demonstrar o funcionamento prático do agente, foi gravado um vídeo mostra
 🔗 Link do vídeo:
 https://youtu.be/7KlYyqrxx68
 
-##  5. Agente de IA funcionando corretamente na Web e online para testes.
+## 🌐 5. Agente de IA funcionando corretamente na Web e online para testes.
 
+🔗Link no GitHub Pages:
+https://arthurgarcia99.github.io/-Trabalho-2-Bimestre-Criando-um-Agente-de-IA/
 
 ## 👨‍💻 Desenvolvido por
 
