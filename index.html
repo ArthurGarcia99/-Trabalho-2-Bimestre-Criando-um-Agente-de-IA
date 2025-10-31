@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agente NL ↔ CPC</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Agente NL ↔ CPC</h1>
+
+    <div class="grid" style="margin-top:12px;">
+      <div>
+        <div class="card">
+          <label for="nl"><strong>Sentença (Português)</strong></label>
+          <textarea id="nl" rows="4" placeholder="Ex.: Se está chovendo, então levarei guarda-chuva."></textarea>
+
+          <div class="row" style="margin-top:8px;">
+            <button id="toCPC">Traduzir para CPC</button>
+            <button id="clearNL">Limpar</button>
+            <button id="copyNL">Copiar NL</button>
+          </div>
+
+          <div style="margin-top:10px;">
+            <label><strong>Fórmula</strong></label>
+            <input id="formula" type="text" placeholder="Resultado aparecerá aqui (ex.: A → B)" />
+            <div style="margin-top:6px;" class="row">
+              <button id="copyFormula">Copiar fórmula</button>
+              <button id="toNL">Gerar sentença em PT-BR</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <strong>Exemplos rápidos</strong>
+          <div class="small muted">Clique em carregar para substituir NL/Fórmula/Dicionário</div>
+          <div id="examples" style="margin-top:8px; display:grid; gap:8px;"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>Dicionário de átomos</strong>
+            <div>
+              <button id="addAtom">Adicionar</button>
+              <button id="resetDict">Padrão</button>
+            </div>
+          </div>
+          <div class="small muted">Mapeie letras (A, B, C, ...) para proposições em PT-BR.</div>
+          <div id="dictList" style="margin-top:8px; display:flex; flex-direction:column; gap:8px; max-height:420px; overflow:auto;"></div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <strong>Conectivos suportados</strong>
+          <ul class="small">
+            <li>¬ negação — "não", "não é verdade que"</li>
+            <li>∧ conjunção — "e", "mas"</li>
+            <li>∨ disjunção — "ou"</li>
+            <li>⊕ disjunção exclusiva — "ou ... ou ... (mas não ambos)"</li>
+            <li>→ condicional — "se ..., então ..."; "X somente se Y" ⇒ X → Y</li>
+            <li>↔ bicondicional — "se e somente se", "ssi"</li>
+          </ul>
+          <p class="small muted">Precedência: ¬ &gt; ∧ &gt; (∨, ⊕) &gt; → &gt; ↔.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModalContainer"></div>
+  <script src="script.js"></script>
+</body>
+</html>
