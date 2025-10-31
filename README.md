@@ -12,60 +12,104 @@ A arquitetura do sistema foi projetada para integrar três camadas principais: *
 Essa estrutura garante uma separação clara entre a interação do usuário e o processamento linguístico lógico.
 
 ### 🧠 Estrutura Geral
-
-┌───────────────────────────────┐
-│         Interface Web         │
-│  (HTML + CSS)                 │
-│ ┌───────────────────────────┐ │
-│ │ Área NL (Entrada Texto)   │◄─── Usuário digita frase em português
-│ │ Botões: Traduzir / Limpar │ │
-│ │ Área Fórmula CPC          │ │
-│ │ Dicionário de Átomos      │ │
-│ │ Exemplos Rápidos           │ │
-│ └───────────────────────────┘ │
-└──────────────┬────────────────┘
-               │
-               ▼
-┌───────────────────────────────────────┐
-│       Camada de Lógica (JavaScript)   │
-│ ┌───────────────────────────────────┐ │
-│ │ 1️⃣ Pré-processamento (normalizeNL) │
-│ │   → Remove acentos, pontuação, etc │
-│ │                                     │
-│ │ 2️⃣ Extração de Átomos (extractAtomsFromNL) │
-│ │   → Identifica proposições básicas │
-│ │                                     │
-│ │ 3️⃣ Geração de Dicionário (buildDictionaryFromNL) │
-│ │   → Mapeia letras A, B, C... para frases │
-│ │                                     │
-│ │ 4️⃣ Tradução NL → Fórmula (nlToFormula) │
-│ │   → Substitui frases pelos símbolos lógicos │
-│ │                                     │
-│ │ 5️⃣ Tradução Fórmula → NL (realizePT) │
-│ │   → Reconstrói a sentença natural │
-│ │                                     │
-│ │ 6️⃣ Parser Lógico (tokenizeFormula + parseFormula) │
-│ │   → Constrói árvore sintática da fórmula │
-│ │                                     │
-│ │ 7️⃣ Avaliação (evalAST) [opcional] │
-│ │   → Calcula valor lógico (não usado nesta versão) │
-│ └───────────────────────────────────┘ │
-└───────────────────────────────────────┘
-               │
-               ▼
-┌───────────────────────────────────────┐
-│       Camada de Interação (UI/UX)     │
-│  - Botões e eventos (onclick)         │
-│  - Modal para confirmar átomos        │
-│  - Exibição do dicionário             │
-│  - Copiar / limpar campos             │
-└───────────────────────────────────────┘
-               │
-               ▼
-┌───────────────────────────────────────┐
-│         Usuário / Interface Final     │
-│  - Visualiza traduções NL ↔ CPC       │
-│  - Edita manualmente átomos           │
-│  - Testa exemplos rápidos             │
-└───────────────────────────────────────┘
+Usuário → Interface Web → Motor de Tradução → Resultado (CPC ↔ NL)
 <img width="1536" height="1024" alt="ChatGPT Image 31 de out  de 2025, 16_27_44" src="https://github.com/user-attachments/assets/4bd171e9-335f-455a-82b1-40df98516c94" />
+
+⚙️ Explicação do Funcionamento
+
+O usuário digita uma sentença em português no campo de entrada.
+
+O sistema realiza o pré-processamento linguístico (remoção de acentos, pontuação, etc.).
+
+As proposições básicas (átomos) são extraídas e mapeadas para letras (A, B, C…).
+
+A função de tradução converte conectivos linguísticos (“e”, “ou”, “se... então...”) em símbolos formais (∧, ∨, →, ¬, ↔).
+
+A fórmula resultante é exibida ao usuário, junto com o dicionário dos átomos.
+
+A tradução inversa (CPC → NL) é feita reconstruindo frases com base na árvore sintática lógica.
+
+## 🧠 2. Estratégia de Tradução (Regras, Mapeamento, Exemplos e Análise)
+### 📘 Introdução
+
+A estratégia de tradução baseia-se em um mapeamento direto de padrões linguísticos da língua portuguesa para os símbolos formais da lógica proposicional.
+Não foram utilizadas LLMs (modelos de linguagem de larga escala) — toda a lógica foi implementada manualmente via regras e dicionários em JavaScript.
+
+⚖️ Mapeamento de Regras Principais
+
+| Linguagem Natural | Símbolo Lógico | Significado   |
+| ----------------- | -------------- | ------------- |
+| não               | ¬              | Negação       |
+| e                 | ∧              | Conjunção     |
+| ou                | ∨              | Disjunção     |
+| se ... então ...  | →              | Condicional   |
+| se e somente se   | ↔              | Bicondicional |
+
+🧩 Exemplo de Tradução
+
+Entrada NL:
+
+Se está chovendo, então levarei guarda-chuva.
+
+Saída CPC:
+
+A → B
+
+Dicionário:
+
+A = está chovendo
+
+B = levarei guarda-chuva
+
+Tradução inversa (CPC → NL):
+
+Se está chovendo, então levarei guarda-chuva.
+
+🧪 Análise de Acertos e Erros
+
+✅ Acertos:
+
+Consegue identificar corretamente conectivos lógicos.
+
+Tradução é fiel em frases simples e compostas diretas.
+
+⚠️ Limitações:
+
+Dificuldade em interpretar frases ambíguas (“ou” exclusivo/inclusivo).
+
+Necessita confirmação manual dos átomos extraídos.
+
+Não compreende contextos complexos ou negações compostas (“se não chover…”).
+
+## ⚙️ 3. Limitações e Possibilidades de Melhoria
+### 📘 Introdução
+
+Apesar de funcional, o agente apresenta limitações inerentes ao uso de regras fixas e ausência de compreensão semântica profunda.
+
+🧱 Limitações Atuais
+
+Reconhecimento limitado de estruturas complexas de linguagem natural.
+
+Falta de análise morfossintática (não há uso de NLP avançado).
+
+Tradução literal pode gerar ambiguidades.
+
+Dicionário de átomos depende da confirmação manual do usuário.
+
+🚀 Possibilidades de Melhoria
+
+Integração com Modelos de Linguagem (LLMs), como GPT, para análise semântica e contextual.
+
+Implementação de analisador morfossintático (POS tagging).
+
+Geração automática de tabelas-verdade a partir da fórmula CPC.
+
+Exportação dos resultados em PDF/LaTeX para uso acadêmico.
+
+## 🎥 4. Demonstração em Vídeo
+### 📘 Introdução
+
+Para demonstrar o funcionamento prático do agente, foi gravado um vídeo mostrando o processo de tradução de sentenças, geração de fórmulas e uso do dicionário de átomos.
+
+🔗 Link do vídeo:
+https://youtu.be/7KlYyqrxx68
