@@ -113,3 +113,20 @@ Para demonstrar o funcionamento prático do agente, foi gravado um vídeo mostra
 
 🔗 Link do vídeo:
 https://youtu.be/7KlYyqrxx68
+
+##  Agente de IA está funcionando corretamente na Web e online para testes pelo professor
+
+
+## 👨‍💻 Desenvolvido por
+
+Arthur Assis Garcia - Ciencia da Computação
+
+Gabriel Letro Tozati - Ciencia da Computação
+
+Kaique Fabio Teixeira Lima - Sistemas de Informação
+
+Matéria: Lógica para Computação
+
+Instituição: Uni-FACEF
+
+Ano: 2025
